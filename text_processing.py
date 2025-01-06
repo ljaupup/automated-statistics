@@ -31,10 +31,10 @@ for college in college_list:
         college_log[college] = []
     for info in chat_infos:
         if college in info:
-            print(college + "---" + info)
+            # print(college + "---" + info)
             chat_infos_check.append(info)
             college_log[college].append(info)
-    print("*******************************")
+    # print("*******************************")
 print(len(chat_infos_check))
 
 # 去除chat_infos中包含的chat_infos_check的项
@@ -53,7 +53,14 @@ for info in chat_infos:
         if keyword not in college_log:
             college_log[keyword] = []
         if pattern.search(info):
-            print(keyword + "---" + info)
+            # print(keyword + "---" + info)
             college_log[keyword].append(info)
 
 pprint(college_log)
+
+sort_list = ['土木', '环境', '建科', '材料', '管理',
+             '机电', '冶金', '信控', '艺术', '理学',
+             '文学', '资源', '公管', '化工', '体育', '安德', '城市']
+# 将college_log按sort_list排序
+sorted_college_log = {k: college_log[k] for k in sort_list if k in college_log}
+pprint(sorted_college_log)

@@ -67,5 +67,5 @@ sort_list = ['土木', '环境', '建科', '材料', '管理',
 sorted_college_log = {k: college_log[k] for k in sort_list if k in college_log}
 pprint(sorted_college_log)
 # 将sorted_college_log写入json文件
-with open(r'json/250106.json', 'w', encoding='utf-8') as f:
+with open(r'json/250105.json', 'w', encoding='utf-8') as f:
     json.dump(sorted_college_log, f, ensure_ascii=False, indent=4)

@@ -1,3 +1,4 @@
+import json
 import re
 from pprint import pprint
 
@@ -11,7 +12,7 @@ college_list = ['土木', '环境', '建科', '材料',
                 '安德', '城市', '马院']
 
 
-with open(r'src/250102.txt', 'r', encoding='utf-8') as f:
+with open(r'src/250105.txt', 'r', encoding='utf-8') as f:
     text = f.read()
 
 pattern = r"(.+?): \d{2}-\d{2} \d{2}:\d{2}:\d{2}\n"
@@ -25,7 +26,7 @@ chat_infos = [i.strip() for i in text_de_time.split("\n\n")]
 chat_infos_check = []
 
 # 排除conflict_college之外的学院
-print(len(chat_infos))
+# print(len(chat_infos))
 for college in college_list:
     if college not in college_log:
         college_log[college] = []
@@ -35,7 +36,7 @@ for college in college_list:
             chat_infos_check.append(info)
             college_log[college].append(info)
     # print("*******************************")
-print(len(chat_infos_check))
+# print(len(chat_infos_check))
 
 # 去除chat_infos中包含的chat_infos_check的项
 for info in chat_infos_check:
@@ -56,11 +57,15 @@ for info in chat_infos:
             # print(keyword + "---" + info)
             college_log[keyword].append(info)
 
-pprint(college_log)
+# pprint(college_log)
 
 sort_list = ['土木', '环境', '建科', '材料', '管理',
              '机电', '冶金', '信控', '艺术', '理学',
-             '文学', '资源', '公管', '化工', '体育', '安德', '城市']
+             '文学', '马院', '资源', '公管', '化工',
+             '体育', '安德', '城市']
 # 将college_log按sort_list排序
 sorted_college_log = {k: college_log[k] for k in sort_list if k in college_log}
 pprint(sorted_college_log)
+# 将sorted_college_log写入json文件
+with open(r'json/250106.json', 'w', encoding='utf-8') as f:
+    json.dump(sorted_college_log, f, ensure_ascii=False, indent=4)

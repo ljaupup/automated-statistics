@@ -1,17 +1,15 @@
 import re
+from pprint import pprint
 
-conflict_college = ['理学院', '管理', '公共管理']
+college_log= {}
+
+conflict_college = ['理学', '管理', '公共管理']
 
 college_list = ['土木', '环境', '建科', '材料',
-                # '管理',
-                '机电', '冶金', '信控',
-                '艺术',
-                # '理学',
-                '文学', '资源',
-                # '公管',
-                '化工', '体育', '安德', '城市', '马院']
+                '机电', '冶金', '信控', '艺术',
+                '文学', '资源', '化工', '体育',
+                '安德', '城市', '马院']
 
-# college_list = ['信控']
 
 with open(r'src/250102.txt', 'r', encoding='utf-8') as f:
     text = f.read()
@@ -29,10 +27,13 @@ chat_infos_check = []
 # 排除conflict_college之外的学院
 print(len(chat_infos))
 for college in college_list:
+    if college not in college_log:
+        college_log[college] = []
     for info in chat_infos:
         if college in info:
             print(college + "---" + info)
             chat_infos_check.append(info)
+            college_log[college].append(info)
     print("*******************************")
 print(len(chat_infos_check))
 
@@ -41,16 +42,18 @@ for info in chat_infos_check:
     chat_infos.remove(info)
 print(len(chat_infos))
 
-# 处理conflict_college中的学院
-for info in chat_infos:
-    for i in range(3):
-        if conflict_college[0] not in info:
-            continue
-        if conflict_college[i] in info:
-            continue
-        else:
-            print(conflict_college[i - 1] + "---" + info)
-            break
+conflict_college_patterns = {
+    '理学': re.compile(r'^理学院'),
+    '管理': re.compile(r'^管理'),
+    '公管': re.compile(r'^公共管理(学院)?|^公管(学院)?')
+}
 
-# for info in chat_infos:
-#     print(info)
+for info in chat_infos:
+    for keyword, pattern in conflict_college_patterns.items():
+        if keyword not in college_log:
+            college_log[keyword] = []
+        if pattern.search(info):
+            print(keyword + "---" + info)
+            college_log[keyword].append(info)
+
+pprint(college_log)

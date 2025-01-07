@@ -1,5 +1,5 @@
 import re
-from pprint import pprint
+from datetime import datetime, timedelta
 
 import json
 
@@ -11,13 +11,16 @@ for k, v in data.items():
     for info in v:
         # 将长空格替换为一个\n
         info_de_space = re.sub(r'    +', '\n', info)
-        print(info_de_space)
+        # print(info_de_space)
         # info中有的可能存在\n或者长空格，将其进行分割
         if '\n' in info:
-            info_list = re.split(r'\n+', info_de_space)
+            info_list = info_de_space.split('\n')
             v.remove(info)
+            if ':' in info_list[0] or "：" in info_list[0]:
+                v.extend(info_list[1:])
+            else:
+                v.extend(info_list)
             break
-    v.extend(info_list[1:])
 
 # with open(r'd:/DESKTOP/250105.json', 'w', encoding='utf-8') as f:
 #     json.dump(data, f, ensure_ascii=False, indent=4)
@@ -36,12 +39,18 @@ for k, v in data.items():
         else:
             sort_data[k]["本科生"].append(info)
 
-pprint(sort_data)
 
 # 若sort_data中的“研究生”的值为空，则删除该键值
 for k, v in list(sort_data.items()):
     if not v["研究生"]:
         del sort_data[k]["研究生"]
 
-with open(r'd:/DESKTOP/250105_sort.json', 'w', encoding='utf-8') as f:
+for k, v in sort_data.items():
+    undergraduate = sort_data[k]["本科生"]
+    # 根据列表undergraduate中的元素的级字前的两个数字进行排序
+
+# 前一天的日期
+date = datetime.now().date() - timedelta(days=1)
+date = date.strftime('%Y-%m-%d')
+with open(r'd:/DESKTOP/{}值班记录.json'.format(date), 'w', encoding='utf-8') as f:
     json.dump(sort_data, f, ensure_ascii=False, indent=4)

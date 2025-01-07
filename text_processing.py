@@ -2,7 +2,7 @@ import json
 import re
 from pprint import pprint
 
-college_log= {}
+college_log = {}
 
 conflict_college = ['理学', '管理', '公共管理']
 
@@ -10,7 +10,6 @@ college_list = ['土木', '环境', '建科', '材料',
                 '机电', '冶金', '信控', '艺术',
                 '文学', '资源', '化工', '体育',
                 '安德', '城市', '马院']
-
 
 with open(r'src/250105.txt', 'r', encoding='utf-8') as f:
     text = f.read()
